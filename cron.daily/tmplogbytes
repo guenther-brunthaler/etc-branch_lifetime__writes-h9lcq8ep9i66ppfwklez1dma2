@@ -1,0 +1,9 @@
+#! /bin/sh
+dev=mmcblk0
+
+test "$1" != --debug && exec < /dev/null > /dev/null 2>& 1
+set -e
+get() {
+	awk '{print $7 * 512}' /sys/block/$dev/stat
+}
+logger -t "$0" -p user.debug "`get` bytes written to $dev since last boot"
